@@ -1,4 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+
+import 'login.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -16,15 +21,14 @@ class SignUpPage extends StatelessWidget {
                 height: 0.25*height,
               child: Column(
                 children: [
-                  SizedBox(height: height*0.2),
-                  const Expanded(
-                    child: CircleAvatar(
-                      radius: 100,
-                      backgroundImage: AssetImage(
-                        "assets/profile.png"
-                      ),
+                  SizedBox(height: height*0.05),
+                  CircleAvatar(
+                    radius: height*0.1,
+                    backgroundImage: AssetImage(
+                        "assets/logo.png"
                     ),
-                  )
+                  ),
+
                 ],
               )
 
@@ -37,7 +41,7 @@ class SignUpPage extends StatelessWidget {
                   children: [
                     SizedBox(height: 40,),
                     Text(
-                      "Welcome!",
+                      "Sign up",
                       style: TextStyle(
                           fontSize: 40,
                           color: Colors.black,
@@ -45,7 +49,7 @@ class SignUpPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Sign up",
+                      "Welcome",
                       style: TextStyle(
                         fontSize: 25,
                         color: Colors.black54,
@@ -154,7 +158,7 @@ class SignUpPage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            RichText(text: const TextSpan(
+            RichText(text: TextSpan(
                 text: "Already have an account?",
                 style:  TextStyle(
                   color: Colors.grey,
@@ -168,6 +172,7 @@ class SignUpPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
+                      recognizer: TapGestureRecognizer()..onTap=()=>Get.to(()=>LoginPage())
                   )
                 ]
             ))

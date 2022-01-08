@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:untitled/signup.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -19,18 +21,18 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             width: width,
             height: 0.25*height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/logo.png'),
-                    scale: 0.3
-              ),
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(120.0),
-                  bottomLeft: Radius.circular(120.0)),
-              color: Colors.teal,
+              child: Column(
+                children: [
+                  SizedBox(height: height*0.05),
+                  CircleAvatar(
+                      radius: height*0.1,
+                    backgroundImage: AssetImage(
+                        "assets/logo.png"
+                    ),
+                    ),
 
-            )
+                ],
+              )
 
           ),
           Container(
@@ -41,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 SizedBox(height: 40,),
                 Text(
-                  "Hi!",
+                  "Log In",
                   style: TextStyle(
                     fontSize: 40,
                     color: Colors.black,
@@ -49,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Text(
-                  "Log in",
+                  "Hello",
                   style: TextStyle(
                       fontSize: 25,
                       color: Colors.black54,
@@ -71,6 +73,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: TextField(
                     decoration: InputDecoration(
+                        hintText: "Email",
+                        prefixIcon: Icon(Icons.email, color:Colors.teal),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(60),
                         borderSide: BorderSide(
@@ -104,6 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: TextField(
                       decoration: InputDecoration(
+                          hintText: "Password",
+                          prefixIcon: Icon(Icons.password, color:Colors.teal),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(60),
                               borderSide: BorderSide(
@@ -164,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 20,
           ),
-          RichText(text: const TextSpan(
+          RichText(text: TextSpan(
             text: "Not on this app yet?",
             style:  TextStyle(
               color: Colors.grey,
@@ -178,6 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
+                recognizer: TapGestureRecognizer()..onTap=()=>Get.to(()=>SignUpPage())
               )
             ]
           ))
