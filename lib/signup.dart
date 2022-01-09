@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:untitled/authentication_controller.dart';
 
 import 'login.dart';
 
@@ -10,173 +11,188 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var emailController = TextEditingController();
+    var passwordController = TextEditingController();
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Container(
-                width: width,
-                height: 0.25*height,
-              child: Column(
-                children: [
-                  SizedBox(height: height*0.05),
-                  CircleAvatar(
-                    radius: height*0.1,
-                    backgroundImage: AssetImage(
-                        "assets/logo.png"
-                    ),
-                  ),
-
-                ],
-              )
-
-            ),
-            Container(
-                width: width,
-                margin: const EdgeInsets.only(left:40, right: 40),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                  width: width,
+                  height: 0.25*height,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 40,),
-                    Text(
-                      "Sign up",
-                      style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold
+                    SizedBox(height: height*0.05),
+                    CircleAvatar(
+                      radius: height*0.1,
+                      backgroundImage: AssetImage(
+                          "assets/logo.png"
                       ),
                     ),
-                    Text(
-                      "Welcome",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 30,),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(120.0), color:Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 10,
-                                offset: Offset(1,1),
-                                spreadRadius: 3,
-                                color: Colors.grey.withOpacity(0.4)
-                            ),
-                          ]
-                      ),
-                      child: TextField(
-                          decoration: InputDecoration(
-                              hintText: "Email",
-                              prefixIcon: Icon(Icons.email, color:Colors.teal),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(60),
-                                  borderSide: BorderSide(
-                                      color: Colors.white
-                                  )
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(60),
-                                  borderSide: BorderSide(
-                                      color: Colors.white
-                                  )
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(120.0),
-                              )
-                          )
-                      ),
-                    ),
-                    SizedBox(height: 20,),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(120.0), color:Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 10,
-                                offset: Offset(1,1),
-                                spreadRadius: 3,
-                                color: Colors.grey.withOpacity(0.4)
-                            ),
-                          ]
-                      ),
-                      child: TextField(
-                          decoration: InputDecoration(
-                            hintText: "Password",
-                              prefixIcon: Icon(Icons.password, color:Colors.teal),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(60),
-                                  borderSide: BorderSide(
-                                      color: Colors.white
-                                  )
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(60),
-                                  borderSide: BorderSide(
-                                      color: Colors.white
-                                  )
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(120.0),
-                              )
-                          )
-                      ),
-                    ),
+
                   ],
                 )
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              width: width,
-              height: height*0.1,
-              margin: const EdgeInsets.only(left:80, right: 80),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(120.0),
-                    bottomLeft: Radius.circular(120.0),
-                    topRight: Radius.circular(120.0),
-                    topLeft: Radius.circular(120.0)),
-                color: Colors.teal,
+
               ),
-              child: Center(
-                child: Text(
-                    "Sign up",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color:Colors.white,
-                    )
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            RichText(text: TextSpan(
-                text: "Already have an account?",
-                style:  TextStyle(
-                  color: Colors.grey,
-                  fontSize: 15,
-                ),
-                children: [
-                  TextSpan(
-                    text: " Log in",
-                    style:  TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                      recognizer: TapGestureRecognizer()..onTap=()=>Get.to(()=>LoginPage())
+              Container(
+                  width: width,
+                  margin: const EdgeInsets.only(left:40, right: 40),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 40,),
+                      Text(
+                        "Sign up",
+                        style: TextStyle(
+                            fontSize: 40,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      Text(
+                        "Welcome",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 30,),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(120.0), color:Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 10,
+                                  offset: Offset(1,1),
+                                  spreadRadius: 3,
+                                  color: Colors.grey.withOpacity(0.4)
+                              ),
+                            ]
+                        ),
+                        child: TextField(
+                          controller: emailController,
+                            decoration: InputDecoration(
+                                hintText: "Email",
+                                prefixIcon: Icon(Icons.email, color:Colors.teal),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(60),
+                                    borderSide: BorderSide(
+                                        color: Colors.white
+                                    )
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(60),
+                                    borderSide: BorderSide(
+                                        color: Colors.white
+                                    )
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(120.0),
+                                )
+                            )
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(120.0), color:Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 10,
+                                  offset: Offset(1,1),
+                                  spreadRadius: 3,
+                                  color: Colors.grey.withOpacity(0.4)
+                              ),
+                            ]
+                        ),
+                        child: TextField(
+                          controller: passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                                prefixIcon: Icon(Icons.password, color:Colors.teal),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(60),
+                                    borderSide: BorderSide(
+                                        color: Colors.white
+                                    )
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(60),
+                                    borderSide: BorderSide(
+                                        color: Colors.white
+                                    )
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(120.0),
+                                )
+                            )
+                        ),
+                      ),
+                    ],
                   )
-                ]
-            ))
-          ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              GestureDetector(
+                onTap: (){
+                  AuthenticationController.instance.register(
+                      emailController.text.trim(),
+                      passwordController.text.trim()
+                  );
+                },
+                child: Container(
+                  width: width,
+                  height: height*0.1,
+                  margin: const EdgeInsets.only(left:80, right: 80),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(120.0),
+                        bottomLeft: Radius.circular(120.0),
+                        topRight: Radius.circular(120.0),
+                        topLeft: Radius.circular(120.0)),
+                    color: Colors.teal,
+                  ),
+                  child: Center(
+                    child: Text(
+                        "Sign up",
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color:Colors.white,
+                        )
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              RichText(text: TextSpan(
+                  text: "Already have an account?",
+                  style:  TextStyle(
+                    color: Colors.grey,
+                    fontSize: 15,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: " Log in",
+                      style:  TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                        recognizer: TapGestureRecognizer()..onTap=()=>Get.to(()=>LoginPage())
+                    )
+                  ]
+              ))
+            ],
+          ),
         )
     );
   }
