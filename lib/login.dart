@@ -1,17 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/signup.dart';
 
-import 'authentication_controller.dart';
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+import 'home.dart';
 
-  @override
-  _LoginPageState createState() => _LoginPageState();
-  }
+class LoginPage extends StatelessWidget {
+  LoginPage({Key? key}) : super(key: key);
 
-class _LoginPageState extends State<LoginPage> {
+
+ final FirebaseAuth _firebase =  FirebaseAuth.instance;
+
+
   @override
   Widget build(BuildContext context) {
     var emailController = TextEditingController();
@@ -44,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
               width: width,
               margin: const EdgeInsets.only(left:40, right: 40),
               child: SingleChildScrollView(
+                controller: ScrollController(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -138,15 +141,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(height: 20,),
-                    Text(
-                      "Forgot password?",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
                   ],
                 ),
               )
@@ -155,11 +149,26 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             GestureDetector(
-              onTap: (){
-                AuthenticationController.instance.login(
-                    emailController.text.trim(),
-                    passwordController.text.trim()
-                );
+              onTap: () async {
+                try {
+                  await _firebase.signInWithEmailAndPassword(
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim()
+                  );
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => HomePage(),
+                    ),
+                  );
+                }on FirebaseAuthException catch (e){
+                  showDialog(
+                    context: context,
+                    builder: (cx) => AlertDialog(
+                      title: Text("Invalid login"),
+                      content: Text('${e.message}'),
+                    )
+                  );
+                }
               },
               child: Container(
                   width: width,
@@ -188,27 +197,29 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            RichText(text: TextSpan(
-              text: "Not on this app yet?",
-              style:  TextStyle(
-                color: Colors.grey,
-                fontSize: 15,
-              ),
-              children: [
-                TextSpan(
-                text: " Sign up",
-                style:  TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-                  recognizer: TapGestureRecognizer()..onTap=()=>Get.to(()=>SignUpPage())
-                )
-              ]
-            ))
+            RichText(
+                text: TextSpan(
+                    text: "Not on this app yet?",
+                    style:  TextStyle(
+                      color: Colors.grey,
+                      fontSize: 15,
+                    ),
+                    children: [
+                      TextSpan(
+                      text: " Sign up",
+                      style:  TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                        recognizer: TapGestureRecognizer()..onTap=()=>Get.to(()=>SignUpPage())
+                      )
+                    ]
+            )
+            )
           ],
         ),
-      )
-    );
+      ),
+      );
   }
 }

@@ -1,13 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:untitled/authentication_controller.dart';
 
 import 'login.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  SignUpPage({Key? key}) : super(key: key);
+
+  final FirebaseAuth _firebase =  FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -140,11 +142,26 @@ class SignUpPage extends StatelessWidget {
                 height: 20,
               ),
               GestureDetector(
-                onTap: (){
-                  AuthenticationController.instance.register(
-                      emailController.text.trim(),
-                      passwordController.text.trim()
-                  );
+                onTap: () async {
+                  try {
+                    await _firebase.createUserWithEmailAndPassword(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim()
+                    );
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => LoginPage(),
+                      ),
+                    );
+                  }on FirebaseAuthException catch (e){
+                    showDialog(
+                        context: context,
+                        builder: (cx) => AlertDialog(
+                          title: Text("Invalid registration"),
+                          content: Text('${e.message}'),
+                        )
+                    );
+                  }
                 },
                 child: Container(
                   width: width,
