@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:untitled/signup.dart';
 
-import 'home.dart';
+import 'nav_controller.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -137,7 +137,7 @@ class LoginPage extends StatelessWidget {
                   );
                   await Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (BuildContext context) => HomePage(),
+                      builder: (BuildContext context) => NavController(title: 'home',),
                     ),
                   );
                 }on FirebaseAuthException catch (e){

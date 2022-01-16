@@ -3,6 +3,8 @@ import 'package:untitled/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
+import 'nav_controller.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -18,9 +20,9 @@ class GamesApp extends StatelessWidget{
     return GetMaterialApp(
       title: 'Game App',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.indigo,
       ),
-      home: LoginPage(),
+      home: NavController( title: 'home',),
     );
   }
 }
