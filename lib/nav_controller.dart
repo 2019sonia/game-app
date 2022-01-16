@@ -46,7 +46,7 @@ class NavControllerState extends State<NavController> {
         bottomNavigationBar: CurvedNavigationBar(
           color: Colors.indigoAccent,
           buttonBackgroundColor: Colors.white,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           index: index,
           items: items,
           animationDuration: Duration(milliseconds: 250),
