@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:untitled/signup.dart';
 
 import 'home.dart';
@@ -28,19 +29,8 @@ class LoginPage extends StatelessWidget {
             Container(
               width: width,
               height: 0.25*height,
-                child: Column(
-                  children: [
-                    SizedBox(height: height*0.05),
-                    CircleAvatar(
-                        radius: height*0.1,
-                      backgroundImage: AssetImage(
-                          "assets/logo.png"
-                      ),
-                      ),
-
-                  ],
-                )
-
+              child:
+              Lottie.asset('assets/game-controller.json'),
             ),
             Container(
               width: width,
@@ -50,21 +40,12 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 40,),
-                    Text(
-                      "Log In",
+                    const Text(
+                      "GAMES",
                       style: TextStyle(
                         fontSize: 40,
                         color: Colors.black,
                         fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    Text(
-                      "Hello",
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black54,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 30,),
@@ -84,7 +65,7 @@ class LoginPage extends StatelessWidget {
                           controller: emailController,
                         decoration: InputDecoration(
                             hintText: "Email",
-                            prefixIcon: Icon(Icons.email, color:Colors.teal),
+                            prefixIcon: Icon(Icons.email, color:Colors.indigoAccent),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(60),
                             borderSide: BorderSide(
@@ -121,7 +102,7 @@ class LoginPage extends StatelessWidget {
                           obscureText: true,
                           decoration: InputDecoration(
                               hintText: "Password",
-                              prefixIcon: Icon(Icons.password, color:Colors.teal),
+                              prefixIcon: Icon(Icons.password, color:Colors.indigoAccent),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(60),
                                   borderSide: BorderSide(
@@ -140,7 +121,6 @@ class LoginPage extends StatelessWidget {
                           )
                       ),
                     ),
-                    SizedBox(height: 20,),
                   ],
                 ),
               )
@@ -180,7 +160,7 @@ class LoginPage extends StatelessWidget {
                         bottomLeft: Radius.circular(120.0),
                         topRight: Radius.circular(120.0),
                         topLeft: Radius.circular(120.0)),
-                    color: Colors.teal,
+                    color: Colors.indigo,
                   ),
                 child: Center(
                   child: Text(
