@@ -44,7 +44,7 @@ class NavControllerState extends State<NavController> {
         extendBody: true, //for elements to appear behind nav selected element
         backgroundColor: Colors.white,
         bottomNavigationBar: CurvedNavigationBar(
-          color: Colors.indigoAccent,
+          color: Colors.lightBlueAccent,
           buttonBackgroundColor: Colors.white,
           backgroundColor: Colors.transparent,
           index: index,

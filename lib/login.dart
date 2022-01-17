@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -65,7 +64,7 @@ class LoginPage extends StatelessWidget {
                           controller: emailController,
                         decoration: InputDecoration(
                             hintText: "Email",
-                            prefixIcon: Icon(Icons.email, color:Colors.indigoAccent),
+                            prefixIcon: Icon(Icons.email, color:Colors.lightBlueAccent),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(60),
                             borderSide: BorderSide(
@@ -102,7 +101,7 @@ class LoginPage extends StatelessWidget {
                           obscureText: true,
                           decoration: InputDecoration(
                               hintText: "Password",
-                              prefixIcon: Icon(Icons.password, color:Colors.indigoAccent),
+                              prefixIcon: Icon(Icons.password, color:Colors.lightBlueAccent),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(60),
                                   borderSide: BorderSide(
@@ -160,7 +159,7 @@ class LoginPage extends StatelessWidget {
                         bottomLeft: Radius.circular(120.0),
                         topRight: Radius.circular(120.0),
                         topLeft: Radius.circular(120.0)),
-                    color: Colors.indigo,
+                    color: Colors.lightBlue,
                   ),
                 child: Center(
                   child: Text(

@@ -60,7 +60,7 @@ class SignUpPage extends StatelessWidget {
                           controller: emailController,
                             decoration: InputDecoration(
                                 hintText: "Email",
-                                prefixIcon: Icon(Icons.email, color:Colors.indigoAccent),
+                                prefixIcon: Icon(Icons.email, color:Colors.lightBlueAccent),
                                 focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(60),
                                     borderSide: BorderSide(
@@ -97,7 +97,7 @@ class SignUpPage extends StatelessWidget {
                             obscureText: true,
                             decoration: InputDecoration(
                               hintText: "Password",
-                                prefixIcon: Icon(Icons.password, color:Colors.indigoAccent),
+                                prefixIcon: Icon(Icons.password, color:Colors.lightBlueAccent),
                                 focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(60),
                                     borderSide: BorderSide(
@@ -154,7 +154,7 @@ class SignUpPage extends StatelessWidget {
                         bottomLeft: Radius.circular(120.0),
                         topRight: Radius.circular(120.0),
                         topLeft: Radius.circular(120.0)),
-                    color: Colors.indigo,
+                    color: Colors.lightBlue,
                   ),
                   child: Center(
                     child: Text(

@@ -20,7 +20,7 @@ class GamesApp extends StatelessWidget{
     return GetMaterialApp(
       title: 'Game App',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.lightBlue,
       ),
       home: NavController( title: 'home',),
     );
