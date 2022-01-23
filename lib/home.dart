@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled/model/grid_view_game.dart';
 import 'package:untitled/network/network_request.dart';
 import 'dart:developer';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'model/game.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar( // TODO: Feel free to delete it and replace it with another search bar
+        appBar: AppBar(
           title: Text("Search"),
           actions: [
             IconButton(
@@ -129,24 +130,28 @@ class Helper{
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Container(
-                              child: Image.asset(
-                                'assets/logo.png', width: 120,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                '${snapshot.data?.info?.thumb}', width: 140,
                                 height: 120,
-                                //TODO: Change game image
                                 fit: BoxFit.cover,),
                             ),
-                            SizedBox(height: 5,),
-                            Text(
-                                '${snapshot.data?.info?.title}', //TODO: Change game name
-                                style: TextStyle(
-                                  fontSize: 35,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                )
+                            SizedBox(height: 10,),
+                            Expanded(
+                              child: AutoSizeText(
+                                  '${snapshot.data?.info?.title}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                minFontSize: 20,
+                                maxLines: 2,
+                              ),
                             ),
                             SizedBox(height: 10,),
-
                             Text(
                               "price, store, url?", //TODO: Change game details
                               style: TextStyle(
