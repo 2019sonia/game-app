@@ -32,9 +32,12 @@ class NetworkRequest{
   static Game parseGame(String responseBody){
     var json_game = json.decode(responseBody) as dynamic;
 
-    Game game = json_game.map((model) => Game.fromJson(model));
 
-    return game;
+    return Game(
+      info: Info.fromJson(json_game['info']),
+      cheapestPriceEver: CheapestPriceEver.fromJson(json_game['cheapestPriceEver']),
+      deals: json_game['deals'].map<Deals>((model) => Deals.fromJson(model)).toList(),
+    );
   }
 
   static Future<Game> fetchGame(int id) async {
