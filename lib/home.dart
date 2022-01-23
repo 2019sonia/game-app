@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<List<GridViewGame>> games;
+  static late Future<List<GridViewGame>> games;
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                     child: FutureBuilder(
                       builder: (context, AsyncSnapshot<List<GridViewGame>> snapshot) {
                         if (snapshot.hasData) {
-                          return buildGridView();
+                          return buildListView();
                         } else if (snapshot.hasError) {
                           return const Text('Something went wrong :(');
                         }
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildGridView() =>
+  Widget buildListView() =>
       FutureBuilder(
         builder: (context, AsyncSnapshot<List<GridViewGame>> snapshot) {
           if (snapshot.hasData) {
@@ -73,14 +73,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(8),
               itemCount: snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage:
-                    NetworkImage('${snapshot.data?[index].thumb}'),
-                  ),
-                  title: Text('${snapshot.data?[index].external}'),
-                  subtitle: Text('Cheapest price: ${snapshot.data?[index].cheapest}'),
-                );
+                return buildGame(snapshot, index);
               },
               separatorBuilder: (BuildContext context, int index) =>
               const Divider(),
@@ -93,42 +86,14 @@ class _HomePageState extends State<HomePage> {
         future: games,
       );
 
-  Widget buildGame(AsyncSnapshot snapshot, int index) =>
-      Card(
-        color: Colors.transparent,
-        elevation: 0,
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-        child: GestureDetector(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: DecorationImage( //TODO: Change game image (line below)
-                  image: NetworkImage(
-                      'https://play-lh.googleusercontent.com/V-lvUzA5kK0Xw3wdg8Ct3vfIMXUX5vXYcNLPmudaZ-eyQjedYz-luqIuLmJO6KodE0Y'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    '${snapshot.data?[index].title}', // TODO: Change price name
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      backgroundColor: Colors.white.withOpacity(0.8),
-                    ),
-                  ),
-                ),
-
-              ),
-            ),
-            onTap: () {
-              showGameInfo(context);
-            }
+   static Widget buildGame(AsyncSnapshot<List<GridViewGame>> snapshot, int index) =>
+      ListTile(
+        leading: CircleAvatar(
+          backgroundImage:
+          NetworkImage('${snapshot.data?[index].thumb}'),
         ),
+        title: Text('${snapshot.data?[index].external}'),
+        subtitle: Text('Cheapest price: ${snapshot.data?[index].cheapest}'),
       );
 
   showGameInfo(BuildContext context) {
@@ -239,27 +204,37 @@ class CustomSearchDelegate extends SearchDelegate {
       );
     }
 
-    return FutureBuilder<List<Game>>(
-      future: _search(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return ListView.builder(
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text("snapshot.data[index].name"),
-                onTap: () {
-                  close(context, snapshot.data);
-                },
-              );
+    Future<List<GridViewGame>> searchGames = NetworkRequest.fetchGridViewGames(query.toString());
+
+    return FutureBuilder(
+      builder: (context, AsyncSnapshot<List<GridViewGame>> snapshot) {
+        if (snapshot.hasData) {
+          return FutureBuilder(
+            builder: (context, AsyncSnapshot<List<GridViewGame>> snapshot) {
+              if (snapshot.hasData) {
+                return ListView.separated(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return
+                      _HomePageState.buildGame(snapshot, index);
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+                );
+              } else if (snapshot.hasError) {
+                return Text('Something went wrong :(');
+              }
+              return CircularProgressIndicator();
             },
-            itemCount: 1,
-          );
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+            future: searchGames,
+          );;
+        } else if (snapshot.hasError) {
+          return const Text('Something went wrong :(');
         }
+        return CircularProgressIndicator();
       },
+      future: searchGames,
     );
   }
 
@@ -267,15 +242,5 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
     return Column();
-  }
-
-  Future<List<Game>> _search() async {
-    final authority = 'jsonplaceholder.typicode.com';
-    final path = 'todos';
-    final queryParameters = <String, String>{'title': query};
-    final uri = Uri.https(authority, path, queryParameters);
-    final result = await http.get(uri);
-    final list = json.decode(result.body) as List;
-    return list.map((e) => Game.fromJson(e)).toList();
   }
 }
