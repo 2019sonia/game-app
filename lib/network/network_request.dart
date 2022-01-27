@@ -1,20 +1,21 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:untitled/model/game.dart';
-import 'package:untitled/model/grid_view_game.dart';
+import 'package:untitled/model/list_view_game.dart';
 class NetworkRequest{
   static const String authority = 'www.cheapshark.com';
 
-  static List<GridViewGame> parseGridViewGames(String responseBody){
+  static List<ListViewGame> parseGridViewGames(String responseBody){
     var list = json.decode(responseBody) as List<dynamic>;
 
-    List<GridViewGame> gridViewGames = list.map((model) => GridViewGame.fromJson(model)).toList();
+    List<ListViewGame> gridViewGames = list.map((model) => ListViewGame.fromJson(model)).toList();
 
     return gridViewGames;
   }
 
-  static Future<List<GridViewGame>> fetchGridViewGames(String game_name) async {
+  static Future<List<ListViewGame>> fetchGridViewGames(String game_name) async {
 
     final path = '/api/1.0/games';
     final queryParameters = <String, String>{'title': game_name};
@@ -55,4 +56,47 @@ class NetworkRequest{
     }
   }
 
+  static Future<bool> fetchFavorite(String id) async {
+    var url = "https://games-2ec39-default-rtdb.europe-west1.firebasedatabase.app/"+"data.json";
+    // Check if game in DB (favorited)
+
+    final response = await http.get(Uri.parse(url));
+
+    if(response.statusCode == 200){
+      return parseFavourite(response.body, id);
+    }else{
+      // TODO CHANGE
+      throw Exception('RIP no game for u');
+    }
+  }
+
+  static Future<bool> saveFavouriteGame(String id) async {
+    var url = "https://games-2ec39-default-rtdb.europe-west1.firebasedatabase.app/" +
+        "data.json";
+    // Check if game in DB (favorited)
+
+    final response = await http.post(Uri.parse(url), body: json.encode({"game_id" : id}));
+
+    if (response.statusCode == 200) {
+      return parseFavourite(response.body, id);
+    } else {
+      // TODO CHANGE
+      throw Exception('RIP no game for u');
+    }
+  }
+
+  static bool parseFavourite(String message, String id) {
+
+    if (message == "null") {
+      return false;
+    }
+
+    var list = json.decode(message) as Map<String, dynamic>;
+
+    if(list.containsKey(id)){
+      return true;
+    }
+    return false;
+
+  }
 }

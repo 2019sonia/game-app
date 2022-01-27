@@ -1,4 +1,4 @@
-class GridViewGame {
+class ListViewGame {
   String? _gameID;
   String? _steamAppID;
   String? _cheapest;
@@ -7,7 +7,7 @@ class GridViewGame {
   String? _internalName;
   String? _thumb;
 
-  GridViewGame(
+  ListViewGame(
       {String? gameID,
         String? steamAppID,
         String? cheapest,
@@ -54,7 +54,7 @@ class GridViewGame {
   String? get thumb => _thumb;
   set thumb(String? thumb) => _thumb = thumb;
 
-  GridViewGame.fromJson(Map<String, dynamic> json) {
+  ListViewGame.fromJson(Map<String, dynamic> json) {
     _gameID = json['gameID'];
     _steamAppID = json['steamAppID'];
     _cheapest = json['cheapest'];
