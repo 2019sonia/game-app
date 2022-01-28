@@ -4,21 +4,21 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:untitled/DAO/GameDAO.dart';
 import 'package:untitled/model/game.dart';
-import 'package:untitled/model/list_view_game.dart';
+import 'package:untitled/model/view_game.dart';
 class NetworkRequest{
 
   static const String authority = 'www.cheapshark.com';
   static final gameDAO = GameDAO();
 
-  static List<ListViewGame> parseGridViewGames(String responseBody){
+  static List<ViewGame> parseViewGames(String responseBody){
     var list = json.decode(responseBody) as List<dynamic>;
 
-    List<ListViewGame> gridViewGames = list.map((model) => ListViewGame.fromJson(model)).toList();
+    List<ViewGame> gridViewGames = list.map((model) => ViewGame.fromJson(model)).toList();
 
     return gridViewGames;
   }
 
-  static Future<List<ListViewGame>> fetchGridViewGames(String game_name) async {
+  static Future<List<ViewGame>> fetchViewGames(String game_name) async {
 
     final path = '/api/1.0/games';
     final queryParameters = <String, String>{'title': game_name};
@@ -27,7 +27,7 @@ class NetworkRequest{
     final result = await http.get(uri);
 
     if(result.statusCode == 200){
-      return compute(parseGridViewGames, result.body);
+      return compute(parseViewGames, result.body);
     }else{
       throw Exception('RIP no games for u');
     }
@@ -75,17 +75,36 @@ class NetworkRequest{
     }
   }
 
-  static bool parseFavourite(String message, String id) {
+  static Future<List<Game>> fetchGames(List<int> ids) async {
 
-    if (message == "null") {
-      return false;
+    final path = '/api/1.0/games';
+    String path_ids = '';
+
+    var i = ids.iterator;
+
+    //iterate over the list
+    while(i.moveNext()){
+      path_ids += i.current.toString() + ',';
     }
+    path_ids = path_ids.substring(0, path_ids.length - 1);
+    
+    final queryParameters = <String, String>{'ids': path_ids};
+    final uri = Uri.https(authority, path, queryParameters);
 
-    var list = json.decode(message) as Map<String, dynamic>;
+    final result = await http.get(uri);
 
-    if(list.containsKey(id)){
-      return true;
+    if(result.statusCode == 200){
+      return compute(parseFavorites, result.body);
+    }else{
+      throw Exception('Error!');
     }
-    return false;
+  }
+
+  static List<Game> parseFavorites(String responseBody){
+    var list = json.decode(responseBody) as List<dynamic>;
+
+    List<Game> g = list.map((model) => Game.fromJson(model)).toList();
+
+    return g;
   }
 }

@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/game_widget_builder.dart';
-import 'package:untitled/model/list_view_game.dart';
+import 'package:untitled/model/view_game.dart';
 import 'package:untitled/network/network_request.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'SearchDelegate.dart';
@@ -13,18 +13,18 @@ import 'dart:convert';
 class HomePage extends StatefulWidget {
 
   @override
-  _HomePageState createState() => _HomePageState();    // TODO: implement createState
+  _HomePageState createState() => _HomePageState();
 
   HomePage({Key? key}) : super(key: key);
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<List<ListViewGame>> games;
+  late Future<List<ViewGame>> games;
 
   @override
   void initState() {
     super.initState();
-    games = NetworkRequest.fetchGridViewGames("Batman");
+    games = NetworkRequest.fetchViewGames("Batman");
   }
 
   @override
@@ -63,9 +63,9 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Center(
                     child: FutureBuilder(
-                      builder: (context, AsyncSnapshot<List<ListViewGame>> snapshot) {
+                      builder: (context, AsyncSnapshot<List<ViewGame>> snapshot) {
                         if (snapshot.hasData) {
-                          return GameListBuilder.buildListViewGridViewGames(snapshot, context, games);
+                          return GameListBuilder.buildListViewGames(snapshot, context, games);
                         } else if (snapshot.hasError) {
                           return const Text('Something went wrong :(');
                         }

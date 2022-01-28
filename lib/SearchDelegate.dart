@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/game_widget_builder.dart';
 
-import 'model/list_view_game.dart';
+import 'model/view_game.dart';
 import 'network/network_request.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
@@ -45,12 +45,12 @@ class CustomSearchDelegate extends SearchDelegate {
       );
     }
 
-    Future<List<ListViewGame>> searchGames = NetworkRequest.fetchGridViewGames(query.toString());
+    Future<List<ViewGame>> searchGames = NetworkRequest.fetchViewGames(query.toString());
 
     return FutureBuilder(
-      builder: (context, AsyncSnapshot<List<ListViewGame>> snapshot) {
+      builder: (context, AsyncSnapshot<List<ViewGame>> snapshot) {
         if (snapshot.hasData) {
-          return GameListBuilder.buildListViewGridViewGames(snapshot, context, searchGames);
+          return GameListBuilder.buildListViewGames(snapshot, context, searchGames);
         } else if (snapshot.hasError) {
           return const Text('Something went wrong :(');
         }

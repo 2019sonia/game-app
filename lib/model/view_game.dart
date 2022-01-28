@@ -1,4 +1,4 @@
-class ListViewGame {
+class ViewGame {
   String? _gameID;
   String? _steamAppID;
   String? _cheapest;
@@ -7,7 +7,7 @@ class ListViewGame {
   String? _internalName;
   String? _thumb;
 
-  ListViewGame(
+  ViewGame(
       {String? gameID,
         String? steamAppID,
         String? cheapest,
@@ -54,7 +54,7 @@ class ListViewGame {
   String? get thumb => _thumb;
   set thumb(String? thumb) => _thumb = thumb;
 
-  ListViewGame.fromJson(Map<String, dynamic> json) {
+  ViewGame.fromJson(Map<String, dynamic> json) {
     _gameID = json['gameID'];
     _steamAppID = json['steamAppID'];
     _cheapest = json['cheapest'];

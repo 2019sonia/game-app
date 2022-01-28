@@ -8,16 +8,16 @@ import 'package:http/http.dart' as http;
 import 'DAO/GameDAO.dart';
 import 'FavoriteIcon.dart';
 import 'model/game.dart';
-import 'model/list_view_game.dart';
+import 'model/view_game.dart';
 import 'network/network_request.dart';
 
 class GameListBuilder {
 
-  static Widget buildListViewGridViewGames(
-      AsyncSnapshot<List<ListViewGame>> snapshot, BuildContext context,
-      Future<List<ListViewGame>> games) =>
+  static Widget buildListViewGames(
+      AsyncSnapshot<List<ViewGame>> snapshot, BuildContext context,
+      Future<List<ViewGame>> games) =>
       FutureBuilder(
-        builder: (context, AsyncSnapshot<List<ListViewGame>> snapshot) {
+        builder: (context, AsyncSnapshot<List<ViewGame>> snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(
               padding: const EdgeInsets.all(8),
@@ -36,7 +36,49 @@ class GameListBuilder {
         future: games,
       );
 
-  static Widget buildGame(AsyncSnapshot<List<ListViewGame>> snapshot, int index,
+  static Widget buildGridViewGames(BuildContext context,
+      List<int> ids)
+  {
+    Future<List<Game>> games = NetworkRequest.fetchGames(ids);
+
+    return FutureBuilder(
+      builder: (context, AsyncSnapshot<List<Game>> snapshot){
+        if (snapshot.hasData) {
+          return ListView.separated(
+          padding: const EdgeInsets.all(8),
+          itemCount: snapshot.data!.length,
+          itemBuilder: (BuildContext context, int index) {
+            return buildFavoriteGame(snapshot, index, ids[index], context);
+          },
+          separatorBuilder: (BuildContext context, int index) =>
+          const Divider(),
+        );
+        } else if (snapshot.hasError) {
+          return Text('Something went wrong :(');
+        }
+        return const CircularProgressIndicator();
+      },
+      future: games,
+    );
+  }
+
+  static Widget buildFavoriteGame(AsyncSnapshot<List<Game>> snapshot, int index, int id,
+      BuildContext context) =>
+      GestureDetector(
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundImage:
+              NetworkImage('${snapshot.data?[index].info?.thumb}'),
+            ),
+            title: Text('${snapshot.data?[index].info?.title}'),
+            subtitle: Text('Cheapest price ever: ${snapshot.data?[index].cheapestPriceEver?.price}'),
+          ),
+          onTap: () {
+            GameDialogBuilder.showGameInfo(id.toString(), context);
+          }
+      );
+
+  static Widget buildGame(AsyncSnapshot<List<ViewGame>> snapshot, int index,
       BuildContext context) =>
       GestureDetector(
           child: ListTile(
@@ -114,23 +156,24 @@ class GameDialogBuilder {
                             SizedBox(height: 10,),
                             FutureBuilder(
                               builder: (context, AsyncSnapshot<DataSnapshot> snapshot){
-                                if(snapshot.data?.value == null){
-                                  return FavoriteIcon(
-                                      true_or_false: false, game_id: id);
-                                } else if (snapshot.hasData) {
-                                  Map<dynamic, dynamic> values = snapshot.data?.value;
-                                  bool flag = false;
-                                  values.forEach((key, value){
-                                    if(value == id){
-                                      flag = true;
+                                 if (snapshot.hasData) {
+                                    if(snapshot.data?.value == null){
+                                     return FavoriteIcon(
+                                         true_or_false: false, game_id: id);
                                     }
-                                  });
-                                  if(flag){
+                                    Map<dynamic, dynamic> values = snapshot.data?.value;
+                                    bool flag = false;
+                                    values.forEach((key, value){
+                                      if(value == id){
+                                        flag = true;
+                                      }
+                                    });
+                                    if(flag){
+                                      return FavoriteIcon(
+                                          true_or_false: true, game_id: id);
+                                    }
                                     return FavoriteIcon(
-                                        true_or_false: true, game_id: id);
-                                  }
-                                  return FavoriteIcon(
-                                      true_or_false: false, game_id: id);
+                                        true_or_false: false, game_id: id);
                                 }else if (snapshot.hasError) {
                                   return const Icon(Icons.error);
                                 }
