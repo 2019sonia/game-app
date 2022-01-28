@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'DAO/GameDAO.dart';
 import 'FavoriteIcon.dart';
 import 'model/game.dart';
 import 'model/list_view_game.dart';
@@ -55,7 +57,6 @@ class GameDialogBuilder {
   static showGameInfo(String? id, BuildContext context) {
 
     Future<Game> game = NetworkRequest.fetchGame(int.parse(id!));
-    Future<bool> favOrNot = NetworkRequest.fetchFavorite(id);
 
     return showDialog(
         context: context,
@@ -112,18 +113,30 @@ class GameDialogBuilder {
                             ),
                             SizedBox(height: 10,),
                             FutureBuilder(
-                              builder: (context, AsyncSnapshot<bool> snapshot){
-                                if (snapshot.hasData) {
-                                  if('${snapshot.data}' == true){
-                                    return FavoriteIcon(true_or_false: true, game_id: id);
+                              builder: (context, AsyncSnapshot<DataSnapshot> snapshot){
+                                if(snapshot.data?.value == null){
+                                  return FavoriteIcon(
+                                      true_or_false: false, game_id: id);
+                                } else if (snapshot.hasData) {
+                                  Map<dynamic, dynamic> values = snapshot.data?.value;
+                                  bool flag = false;
+                                  values.forEach((key, value){
+                                    if(value == id){
+                                      flag = true;
+                                    }
+                                  });
+                                  if(flag){
+                                    return FavoriteIcon(
+                                        true_or_false: true, game_id: id);
                                   }
-                                  return FavoriteIcon(true_or_false: false, game_id: id);
+                                  return FavoriteIcon(
+                                      true_or_false: false, game_id: id);
                                 }else if (snapshot.hasError) {
-                                  return Icon(Icons.error);
+                                  return const Icon(Icons.error);
                                 }
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               },
-                              future: favOrNot,
+                              future: GameDAO.getData(),
                             )
                           ],
                         );

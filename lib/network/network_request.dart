@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:untitled/DAO/GameDAO.dart';
 import 'package:untitled/model/game.dart';
 import 'package:untitled/model/list_view_game.dart';
 class NetworkRequest{
+
   static const String authority = 'www.cheapshark.com';
+  static final gameDAO = GameDAO();
 
   static List<ListViewGame> parseGridViewGames(String responseBody){
     var list = json.decode(responseBody) as List<dynamic>;
@@ -52,36 +55,23 @@ class NetworkRequest{
     if(result.statusCode == 200){
       return compute(parseGame, result.body);
     }else{
-      throw Exception('RIP no game for u');
+      throw Exception('Error!');
     }
   }
 
-  static Future<bool> fetchFavorite(String id) async {
-    var url = "https://games-2ec39-default-rtdb.europe-west1.firebasedatabase.app/"+"data.json";
-    // Check if game in DB (favorited)
-
-    final response = await http.get(Uri.parse(url));
-
-    if(response.statusCode == 200){
-      return parseFavourite(response.body, id);
-    }else{
-      // TODO CHANGE
-      throw Exception('RIP no game for u');
+  static void saveFavouriteGame(String id) {
+    try{
+      gameDAO.saveGame(id);
+    } catch(e) {
+      throw Exception(e.toString());
     }
   }
 
-  static Future<bool> saveFavouriteGame(String id) async {
-    var url = "https://games-2ec39-default-rtdb.europe-west1.firebasedatabase.app/" +
-        "data.json";
-    // Check if game in DB (favorited)
-
-    final response = await http.post(Uri.parse(url), body: json.encode({"game_id" : id}));
-
-    if (response.statusCode == 200) {
-      return parseFavourite(response.body, id);
-    } else {
-      // TODO CHANGE
-      throw Exception('RIP no game for u');
+  static void deleteFavouriteGame(String id) {
+    try{
+      gameDAO.deleteGame(id);
+    } catch(e) {
+      throw Exception(e.toString());
     }
   }
 
@@ -97,6 +87,5 @@ class NetworkRequest{
       return true;
     }
     return false;
-
   }
 }
