@@ -28,6 +28,9 @@ class _FavoritePageState extends State<FavoritePage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text("Favorite Games"),
+        ),
         body: Column(
           children: [
             Expanded(

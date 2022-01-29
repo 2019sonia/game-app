@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:untitled/DAO/GameDAO.dart';
 import 'package:untitled/model/game.dart';
+import 'package:untitled/model/store.dart';
 import 'package:untitled/model/view_game.dart';
+
 class NetworkRequest{
 
   static const String authority = 'www.cheapshark.com';
@@ -112,5 +114,27 @@ class NetworkRequest{
     );
 
     return g;
+  }
+
+  static Future<List<Store>> fetchStores() async {
+
+    const path = '/api/1.0/stores';
+    final uri = Uri.https(authority, path);
+
+    final result = await http.get(uri);
+
+    if(result.statusCode == 200){
+      return compute(parseStores, result.body);
+    }else{
+      throw Exception('Error!');
+    }
+  }
+
+  static List<Store> parseStores(String responseBody){
+    var list = json.decode(responseBody) as List<dynamic>;
+
+    List<Store> stores = list.map((model) => Store.fromJson(model)).toList();
+
+    return stores;
   }
 }

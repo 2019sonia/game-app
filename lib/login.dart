@@ -11,9 +11,7 @@ import 'nav_controller.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
-
  final FirebaseAuth _firebase =  FirebaseAuth.instance;
-
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ class CustomSearchDelegate extends SearchDelegate {
     // TODO: implement buildActions
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
         },
@@ -20,7 +20,6 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget? buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () {
@@ -31,11 +30,10 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
     if (query.length < 3) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: const <Widget>[
           Center(
             child: Text(
               "Search term must be longer than two letters.",
@@ -50,11 +48,24 @@ class CustomSearchDelegate extends SearchDelegate {
     return FutureBuilder(
       builder: (context, AsyncSnapshot<List<ViewGame>> snapshot) {
         if (snapshot.hasData) {
-          return GameListBuilder.buildListViewGames(snapshot, context, searchGames);
+          var length = snapshot.data?.length ?? 0;
+          if(length != 0){
+            return GameListBuilder.buildListViewGames(snapshot, context, searchGames);
+          }
+          return const Center(
+            child: Text('No games found :(',
+                style: TextStyle(
+                fontSize: 22,
+                color: Colors.black,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          );
+
         } else if (snapshot.hasError) {
-          return const Text('Something went wrong :(');
+          return const Center(child: Text('Something went wrong :('));
         }
-        return CircularProgressIndicator();
+        return const Center(child: CircularProgressIndicator());
       },
       future: searchGames,
     );
@@ -62,7 +73,6 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
     return Column();
   }
 }

@@ -10,6 +10,8 @@ import 'SearchDelegate.dart';
 import 'model/game.dart';
 import 'dart:convert';
 
+import 'model/store.dart';
+
 class HomePage extends StatefulWidget {
 
   @override

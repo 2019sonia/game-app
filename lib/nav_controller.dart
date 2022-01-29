@@ -41,15 +41,14 @@ class NavControllerState extends State<NavController> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        extendBody: true, //for elements to appear behind nav selected element
-        backgroundColor: Colors.white,
+        extendBody: false, //for elements to appear behind nav selected element
         bottomNavigationBar: CurvedNavigationBar(
           color: Colors.lightBlueAccent,
-          buttonBackgroundColor: Colors.white,
+          buttonBackgroundColor: Colors.black38,
           backgroundColor: Colors.transparent,
           index: index,
           items: items,
-          animationDuration: Duration(milliseconds: 250),
+          animationDuration: const Duration(milliseconds: 250),
           onTap: (index) => changeIndex(index)
         ),
         body: screens[index],

@@ -36,7 +36,7 @@ class SignUpPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Text(
-                        "GAMES",
+                        "Game Deal Finder",
                         style: TextStyle(
                             fontSize: 40,
                             color: Colors.black,

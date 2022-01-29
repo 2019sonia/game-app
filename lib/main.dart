@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +13,6 @@ void main() async{
 class GamesApp extends StatelessWidget{
   const GamesApp({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -22,7 +20,7 @@ class GamesApp extends StatelessWidget{
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: NavController( title: 'home',),
+      home: const NavController( title: 'home',),
     );
   }
 }
