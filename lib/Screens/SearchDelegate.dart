@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/game_widget_builder.dart';
+import 'package:untitled/Screens/Builders/game_widget_builder.dart';
 
-import 'model/view_game.dart';
-import 'network/network_request.dart';
+import '../model/view_game.dart';
+import '../network/network_request.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   @override

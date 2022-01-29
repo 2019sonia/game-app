@@ -4,9 +4,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:untitled/signup.dart';
+import 'package:untitled/Screens/signup.dart';
 
-import 'nav_controller.dart';
+import '../Navigation/nav_controller.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);

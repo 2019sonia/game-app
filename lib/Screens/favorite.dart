@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'DAO/GameDAO.dart';
-import 'game_widget_builder.dart';
+import '../DAO/GameDAO.dart';
+import 'Builders/game_widget_builder.dart';
 
 class FavoritePage extends StatefulWidget {
   @override

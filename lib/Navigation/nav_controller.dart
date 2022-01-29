@@ -1,10 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/profile.dart';
+import 'package:untitled/Screens/profile.dart';
 
-import 'favorite.dart';
-import 'home.dart';
+import '../Screens/favorite.dart';
+import '../Screens/home.dart';
 class NavController extends StatefulWidget {
   @override
   State<NavController> createState() => NavControllerState();

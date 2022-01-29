@@ -5,12 +5,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'DAO/GameDAO.dart';
-import 'FavoriteIcon.dart';
-import 'model/game.dart';
-import 'model/store.dart';
-import 'model/view_game.dart';
-import 'network/network_request.dart';
+import '../../DAO/GameDAO.dart';
+import '../Buttons/FavoriteIcon.dart';
+import '../../model/game.dart';
+import '../../model/store.dart';
+import '../../model/view_game.dart';
+import '../../network/network_request.dart';
 
 class GameListBuilder {
 
@@ -73,7 +73,7 @@ class GameListBuilder {
               ),
               title: Align(
                   alignment: Alignment.centerRight,
-                  child: Text(price, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)
+                  child: Text(price, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),)
               )
             );
           },
@@ -120,17 +120,18 @@ class GameListBuilder {
           Card(
             color: Colors.transparent,
             elevation: 0,
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
             child: Column(
-              
               children: [
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(topLeft: const Radius.circular(20.0),topRight: const Radius.circular(20.0)),
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0),topRight: Radius.circular(20.0)),
                       image: DecorationImage(
                         image: NetworkImage('${snapshot.data?[index].info?.thumb}'),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.cover ,
+                        alignment: Alignment.center,
+
                       )
                     ),
                   ),
@@ -171,8 +172,16 @@ class GameListBuilder {
               backgroundImage:
               NetworkImage('${snapshot.data?[index].thumb}'),
             ),
-            title: Text('${snapshot.data?[index].external}'),
-            subtitle: Text('Cheapest price: \$${snapshot.data?[index].cheapest}'),
+            title: Text('${snapshot.data?[index].external}',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20
+              ),),
+            subtitle: Text('Cheapest price: \$${snapshot.data?[index].cheapest}',
+                style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 17
+            ),),
           ),
           onTap: () {
             GameDialogBuilder.showGameInfo(snapshot.data?[index].gameID, context);

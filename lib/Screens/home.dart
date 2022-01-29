@@ -2,15 +2,15 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/game_widget_builder.dart';
+import 'package:untitled/Screens/Builders/game_widget_builder.dart';
 import 'package:untitled/model/view_game.dart';
 import 'package:untitled/network/network_request.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'SearchDelegate.dart';
-import 'model/game.dart';
+import '../model/game.dart';
 import 'dart:convert';
 
-import 'model/store.dart';
+import '../model/store.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -52,10 +52,11 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 15,),
                 Center(
                   child: Text(
-                    "Suggested Games",
+                    "Developer's Favorites",
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.black,
+                      fontWeight: FontWeight.w500
                     ),
                     textAlign: TextAlign.center,
                   ),
