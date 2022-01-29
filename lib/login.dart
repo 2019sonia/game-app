@@ -10,8 +10,7 @@ import 'nav_controller.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
-
- final FirebaseAuth _firebase =  FirebaseAuth.instance;
+  final FirebaseAuth _firebase =  FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +19,10 @@ class LoginPage extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        reverse: true,
         child: Column(
           children: [
             Container(
@@ -39,12 +40,13 @@ class LoginPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      "GAMES",
+                      "Game Deal Finder",
                       style: TextStyle(
                         fontSize: 40,
                         color: Colors.black,
                         fontWeight: FontWeight.bold
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 30,),
                     Container(
@@ -61,16 +63,16 @@ class LoginPage extends StatelessWidget {
                       ),
                       child: TextField(
                           controller: emailController,
-                        decoration: InputDecoration(
+                          decoration: InputDecoration(
                             hintText: "Email",
                             prefixIcon: Icon(Icons.email, color:Colors.lightBlueAccent),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(60),
-                            borderSide: BorderSide(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(60),
+                              borderSide: BorderSide(
                               color: Colors.white
-                            )
-                          ),
-                          enabledBorder: OutlineInputBorder(
+                              )
+                            ),
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(60),
                               borderSide: BorderSide(
                                   color: Colors.white
@@ -79,7 +81,11 @@ class LoginPage extends StatelessWidget {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(120.0),
                           )
-                        )
+                        ),
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (value){
+                          _handleSubmission(context, emailController, passwordController);
+                        },
                       ),
                     ),
                     SizedBox(height: 20,),
@@ -116,7 +122,10 @@ class LoginPage extends StatelessWidget {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(120.0),
                               )
-                          )
+                          ),
+                        onSubmitted: (value){
+                          _handleSubmission(context, emailController, passwordController);
+                        },
                       ),
                     ),
                   ],
@@ -127,27 +136,7 @@ class LoginPage extends StatelessWidget {
               height: 20,
             ),
             GestureDetector(
-              onTap: () async {
-                try {
-                  await _firebase.signInWithEmailAndPassword(
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim()
-                  );
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => NavController(title: 'home',),
-                    ),
-                  );
-                }on FirebaseAuthException catch (e){
-                  showDialog(
-                    context: context,
-                    builder: (cx) => AlertDialog(
-                      title: Text("Invalid login"),
-                      content: Text('${e.message}'),
-                    )
-                  );
-                }
-              },
+              onTap: () => _handleSubmission(context, emailController, passwordController),
               child: Container(
                   width: width,
                   height: height*0.1,
@@ -199,5 +188,29 @@ class LoginPage extends StatelessWidget {
         ),
       ),
       );
+  }
+
+  void _handleSubmission(BuildContext context, var emailController, var passwordController) async {
+    // Not triggered when you press enter on keyboard in  android simulator
+    // Triggers if you tap on the Done button.
+    try {
+      await _firebase.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim()
+      );
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) => NavController(),
+        ),
+      );
+    }on FirebaseAuthException catch (e){
+      showDialog(
+          context: context,
+          builder: (cx) => AlertDialog(
+            title: Text("Invalid login"),
+            content: Text('${e.message}'),
+          )
+      );
+    }
   }
 }

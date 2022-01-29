@@ -38,6 +38,17 @@ class _FavoritePageState extends State<FavoritePage> {
                 child: FutureBuilder(
                   builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
                     if (snapshot.hasData) {
+                      if (snapshot.data?.value == null){
+                        return const Center(
+                          child: Text('No games saved :(',
+                            style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        );
+                      }
                       Map<dynamic, dynamic> values = snapshot.data?.value;
                       List<int> ids = [];
                       values.forEach((k, v) => ids.add( int.parse(k)));
@@ -47,7 +58,7 @@ class _FavoritePageState extends State<FavoritePage> {
                     }else if (snapshot.hasError) {
                       return const Icon(Icons.error);
                     }
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   },
                   future: games_ids,
                 ),

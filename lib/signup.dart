@@ -9,7 +9,6 @@ import 'login.dart';
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({Key? key}) : super(key: key);
-
   final FirebaseAuth _firebase =  FirebaseAuth.instance;
 
   @override
@@ -19,8 +18,10 @@ class SignUpPage extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
+          reverse: true,
           child: Column(
             children: [
               Container(
@@ -42,6 +43,7 @@ class SignUpPage extends StatelessWidget {
                             color: Colors.black,
                             fontWeight: FontWeight.bold
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 30,),
                       Container(
@@ -76,7 +78,10 @@ class SignUpPage extends StatelessWidget {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(120.0),
                                 )
-                            )
+                            ),
+                          onSubmitted: (value){
+                            _handleSubmission(context, emailController, passwordController);
+                          },
                         ),
                       ),
                       SizedBox(height: 20,),
@@ -113,7 +118,10 @@ class SignUpPage extends StatelessWidget {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(120.0),
                                 )
-                            )
+                            ),
+                          onSubmitted: (value){
+                            _handleSubmission(context, emailController, passwordController);
+                          },
                         ),
                       ),
                     ],
@@ -123,27 +131,7 @@ class SignUpPage extends StatelessWidget {
                 height: 20,
               ),
               GestureDetector(
-                onTap: () async {
-                  try {
-                    await _firebase.createUserWithEmailAndPassword(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim()
-                    );
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => LoginPage(),
-                      ),
-                    );
-                  }on FirebaseAuthException catch (e){
-                    showDialog(
-                        context: context,
-                        builder: (cx) => AlertDialog(
-                          title: Text("Invalid registration"),
-                          content: Text('${e.message}'),
-                        )
-                    );
-                  }
-                },
+                onTap: () => _handleSubmission(context, emailController, passwordController),
                 child: Container(
                   width: width,
                   height: height*0.1,
@@ -194,4 +182,28 @@ class SignUpPage extends StatelessWidget {
         )
     );
   }
+
+  void _handleSubmission(BuildContext context, var emailController, var passwordController) async {
+    try {
+      await _firebase.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim()
+      );
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) => LoginPage(),
+        ),
+      );
+    }on FirebaseAuthException catch (e){
+      showDialog(
+          context: context,
+          builder: (cx) => AlertDialog(
+            title: Text("Invalid registration"),
+            content: Text('${e.message}'),
+          )
+      );
+    }
+  }
 }
+
+

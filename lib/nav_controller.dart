@@ -6,9 +6,6 @@ import 'package:untitled/profile.dart';
 import 'favorite.dart';
 import 'home.dart';
 class NavController extends StatefulWidget {
-  const NavController({Key? key, required this.title}) : super(key: key);
-  final String title;
-
   @override
   State<NavController> createState() => NavControllerState();
 }
@@ -32,7 +29,6 @@ class NavControllerState extends State<NavController> {
     setState(() {
       this.index = index;
     });
-
   }
 
   @override
@@ -54,6 +50,4 @@ class NavControllerState extends State<NavController> {
         body: screens[index],
     );
   }
-
-
 }

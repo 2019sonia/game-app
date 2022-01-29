@@ -62,7 +62,7 @@ class _FavoriteShareIconState extends State<FavoriteShareIcon>{
         ),
         SizedBox(width: 80),
         IconButton(
-          onPressed: (){Share.share('Check out ' + widget.game_name + ' for ' + widget.price + '!: '  + widget.url);},
+          onPressed: (){Share.share('Check out ' + widget.game_name + ' for \$' + widget.price + '!: '  + widget.url);},
           icon: const Icon(Icons.share, size: 30)
         )
       ]
