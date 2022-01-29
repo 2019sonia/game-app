@@ -36,7 +36,6 @@ class NetworkRequest{
   static Game parseGame(String responseBody){
     var json_game = json.decode(responseBody) as dynamic;
 
-
     return Game(
       info: Info.fromJson(json_game['info']),
       cheapestPriceEver: CheapestPriceEver.fromJson(json_game['cheapestPriceEver']),
@@ -81,7 +80,6 @@ class NetworkRequest{
     String path_ids = '';
 
     var i = ids.iterator;
-
     //iterate over the list
     while(i.moveNext()){
       path_ids += i.current.toString() + ',';
@@ -101,9 +99,17 @@ class NetworkRequest{
   }
 
   static List<Game> parseFavorites(String responseBody){
-    var list = json.decode(responseBody) as List<dynamic>;
+    var list = json.decode(responseBody) as dynamic;
 
-    List<Game> g = list.map((model) => Game.fromJson(model)).toList();
+    List<Game> g = [];
+
+    list.forEach((k, v) =>
+      g.add(Game(
+        info: Info.fromJson(v['info']),
+        cheapestPriceEver: CheapestPriceEver.fromJson(v['cheapestPriceEver']),
+        deals: v['deals'].map<Deals>((model) => Deals.fromJson(model)).toList(),
+      ))
+    );
 
     return g;
   }
